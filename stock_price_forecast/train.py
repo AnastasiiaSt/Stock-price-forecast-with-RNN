@@ -32,7 +32,7 @@ def train_model(
     tf.random.set_seed(42)
     with mlflow.start_run():
         mlflow.tensorflow.autolog()
-        model = build_model(x_train, y_train, n_hidden, n_neurons, learning_rate,)
+        model = build_model(x_train, y_train, n_hidden, n_neurons, learning_rate)
         history = model.fit(
             x_train,
             y_train,
