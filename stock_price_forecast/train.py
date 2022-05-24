@@ -1,19 +1,20 @@
-from tensorflow import keras
+import tensorflow as tf
 import mlflow
+import mlflow.tensorflow
 
 
 def build_model(
     x_train, y_train, n_hidden, n_neurons, learning_rate
 ):
-    model = keras.models.Sequential()
-    model.add(keras.layers.InputLayer(input_shape=(x_train.shape[1], x_train.shape[2])))
+    model = tf.keras.models.Sequential()
+    model.add(tf.keras.layers.InputLayer(input_shape=(x_train.shape[1], x_train.shape[2])))
     for layer in range(n_hidden):
-        model.add(keras.layers.LSTM(n_neurons))
-    model.add(keras.layers.RepeatVector(y_train.shape[1]))
-    model.add(keras.layers.LSTM(n_neurons, return_sequences=True))
-    model.add(keras.layers.TimeDistributed(keras.layers.Dense(units=x_train.shape[2])))
-    optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="mse")
+        model.add(tf.keras.layers.LSTM(n_neurons))
+    model.add(tf.keras.layers.RepeatVector(y_train.shape[1]))
+    model.add(tf.keras.layers.LSTM(n_neurons, return_sequences=True))
+    model.add(tf.keras.layers.TimeDistributed(tf.keras.layers.Dense(units=x_train.shape[2])))
+    optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+    model.compile(loss="mse", optimizer = optimizer)
     return model
 
 
@@ -28,7 +29,9 @@ def train_model(
     epochs,
     batch_size
 ):
+    tf.random.set_seed(42)
     with mlflow.start_run():
+        mlflow.tensorflow.autolog()
         model = build_model(x_train, y_train, n_hidden, n_neurons, learning_rate,)
         history = model.fit(
             x_train,
@@ -37,7 +40,7 @@ def train_model(
             batch_size=batch_size,
             validation_data=(x_valid, y_valid)
         )
-        mlflow.tensorflow.autolog()
+    return model
 
 
 #model1 = build_model(learning_rate=0.00001)
