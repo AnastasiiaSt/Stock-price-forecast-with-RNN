@@ -1,1 +1,3 @@
 data/
+stock_price_forecast/__pycache__
+mlruns/
