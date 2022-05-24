@@ -10,7 +10,7 @@ def build_model(
     model.add(tf.keras.layers.InputLayer(input_shape=(x_train.shape[1], x_train.shape[2])))
     for layer in range(n_hidden):
         model.add(tf.keras.layers.LSTM(n_neurons))
-        n_neurons = n_neurons / 2
+        n_neurons = n_neurons // 2
     model.add(tf.keras.layers.RepeatVector(y_train.shape[1]))
     model.add(tf.keras.layers.LSTM(n_neurons, return_sequences=True))
     model.add(tf.keras.layers.TimeDistributed(tf.keras.layers.Dense(units=x_train.shape[2])))
