@@ -16,12 +16,11 @@ def main():
         y_train,
         x_valid,
         y_valid,
-        n_hidden=1,
-        n_neurons=64,
-        learning_rate=0.00001,
-        epochs = 1000,
+        n_neurons=[128,64,32,16],
+        learning_rate=0.000002,
+        epochs = 10000,
         batch_size = 128,
-        set_weights = True
+        set_weights = False
     )
  
     model.save_weights('saved_data/weights')

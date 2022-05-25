@@ -4,14 +4,14 @@ import mlflow.tensorflow
 
 
 def build_model(
-    x_train, y_train, n_hidden, n_neurons, learning_rate
+    x_train, y_train, n_neurons, learning_rate
 ):
     model = tf.keras.models.Sequential()
     model.add(tf.keras.layers.InputLayer(input_shape=(x_train.shape[1], x_train.shape[2])))
-    for layer in range(n_hidden):
-        model.add(tf.keras.layers.LSTM(n_neurons))
-    model.add(tf.keras.layers.RepeatVector(y_train.shape[1]))
-    model.add(tf.keras.layers.LSTM(n_neurons, return_sequences=True))
+    for i in range(len(n_neurons)-1):
+        model.add(tf.keras.layers.LSTM(n_neurons[i]))
+        model.add(tf.keras.layers.RepeatVector(y_train.shape[1]))
+    model.add(tf.keras.layers.LSTM(n_neurons[-1], return_sequences=True))
     model.add(tf.keras.layers.TimeDistributed(tf.keras.layers.Dense(units=x_train.shape[2])))
     optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
     model.compile(loss="mse", optimizer = optimizer)
@@ -23,7 +23,6 @@ def train_model(
     y_train,
     x_valid,
     y_valid,
-    n_hidden,
     n_neurons,
     learning_rate,
     epochs,
@@ -33,7 +32,7 @@ def train_model(
     tf.random.set_seed(42)
     with mlflow.start_run():
         mlflow.tensorflow.autolog()
-        model = build_model(x_train, y_train, n_hidden, n_neurons, learning_rate)
+        model = build_model(x_train, y_train, n_neurons, learning_rate)
         if set_weights:
             model.load_weights('saved_data/weights')
         history = model.fit(
