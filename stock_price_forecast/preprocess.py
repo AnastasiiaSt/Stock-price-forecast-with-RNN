@@ -1,5 +1,5 @@
 from sklearn import datasets
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import numpy as np
 import pandas as pd
 
@@ -11,29 +11,40 @@ class Preprocess:
     valid_ratio is ratio of validation set
     """
 
-    def __init__(self, p=5, t=25, valid_ratio=0.15):
+    def __init__(self, p=5, t=25, valid_ratio=0.15, scaling = "min_max"):
         self.train_dataset = None
         self.mean = None
         self.std = None
+        self.x_max = None
+        self.x_min = None
         self.p = p
         self.t = t
         self.valid_ratio = valid_ratio
+        self.scaling = scaling
 
     def fit(self, dataset):
         self.train_dataset = dataset
-        self.mean = np.mean(dataset, axis=0)
-        self.std = np.std(dataset, axis=0)
+        if self.scaling == "min_max":
+            self.x_max = np.max(dataset, axis=0)
+            self.x_min = np.min(dataset, axis=0)
+        elif self.scaling == "standard":
+            self.mean = np.mean(dataset, axis=0)
+            self.std = np.std(dataset, axis=0)
         return self
 
     def transform(self, dataset):
 
         # Data scaling
-        dataset_scaled = dataset - self.mean / self.std
+        if self.scaling == "min_max":
+            x_st = (dataset - self.x_min) / (self.x_max - self.x_min)
+            dataset_scaled = x_st * (1 - (0)) + (0)
+        elif self.scaling == "standard":
+            dataset_scaled = dataset - self.mean / self.std
 
         x = {}
         y = {}
         for price in dataset.columns.to_list():
-            xs, indeces_x, ys, indeces_y = self.x_y_split(dataset[price])
+            xs, indeces_x, ys, indeces_y = self.x_y_split(dataset_scaled[price])
             (
                 x[price + "_train"],
                 x[price + "_valid"],
