@@ -6,5 +6,3 @@ The goal of this project is to create a deep learning model for Boeing stock pri
 
 Long Short Term Memory (LSTM) model is implemented to make prediction of Close, High, Low and Open stock price for 5 consequent days. Hyperparameters such as number of hidden layers of the model, number of neurons, learning rate are tuned using Randomized Search cross-validation.
 
-### Prediction
-
