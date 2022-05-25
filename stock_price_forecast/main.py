@@ -3,21 +3,28 @@ from preprocess import Preprocess
 from train import train_model
 
 
-dataset = get_inputs("data", "BA daily.csv")
-print(dataset)
+def main():
+    dataset = get_inputs("data", "BA daily.csv")
+    print(dataset)
 
-prep = Preprocess()
-prep.fit(dataset)
-x_train, y_train, x_valid, y_valid = prep.transform(dataset)
+    prep = Preprocess(p=5, t=250, valid_ratio=0.10)
+    prep.fit(dataset)
+    x_train, y_train, x_valid, y_valid, x_train_indeces, x_valid_indeces, y_train_indeces, y_valid_indeces = prep.transform(dataset)
 
-train_model(
-    x_train,
-    y_train,
-    x_valid,
-    y_valid,
-    n_hidden=1,
-    n_neurons=32,
-    learning_rate=0.0001,
-    epochs = 100,
-    batch_size = 128
-)
+    model = train_model(
+        x_train,
+        y_train,
+        x_valid,
+        y_valid,
+        n_hidden=1,
+        n_neurons=64,
+        learning_rate=0.00001,
+        epochs = 1000,
+        batch_size = 128,
+        set_weights = True
+    )
+ 
+    model.save_weights('saved_data/weights')
+    model.save('saved_data/model')
+
+main()
