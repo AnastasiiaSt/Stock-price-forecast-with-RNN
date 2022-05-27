@@ -3,9 +3,12 @@
 The goal of this project is to create a deep learning model for Coursera stock price forecast. Dataset of stock prices with 15 minutes interval from 3 May 2021 to 1 January 2022 is used for training and validation. 
 <img src="./images/historical prices.png" width="900">
 
-Below presented monthly, weekly and daily graphs for the stock price just after Coursera IPO. Stock price graphs for other periods of time can be found in *visualization* package *Input Graphs* notebook.
+Monthly, weekly and daily graphs for the stock price just after Coursera IPO are presented below. Stock price graphs for other periods of time can be found in *visualization* package *Input Graphs* notebook.
+Coursera stock price in the first month after IPO:
 <img src="./images/month graph.png" width="900">
+Coursera stock price in the first week after IPO:
 <img src="./images/week graph.png" width="900">
+Coursera stock price for each day of the above week:
 <img src="./images/day graphs.png" width="900">
 
 ### Training
