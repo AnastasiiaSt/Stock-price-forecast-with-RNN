@@ -15,6 +15,8 @@ The dataset is divided into training and validation sets, which are used for mod
 The training runs are stored in MLflow user interface, which is shown below.
 <img src="./images/mlflow ui.png" width="900">
 
+The final model show Mean Squared Error (MSE) of 0.0001 and Mean Absolute Error (MAE) of 0.008 on validation set.
+
 ### Prediction
 
 Comparison of the model predictions with the actual stock price for the training and validation sets are depicted in the following diagrams. Predictions for other periods of time can be found in *visualization* package *Prediction Graphs* notebook.
