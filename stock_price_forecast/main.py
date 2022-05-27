@@ -107,11 +107,11 @@ main(
     n_neurons=[32, 32],
     optimization = "Adam",
     learning_rate=0.0000001,
-    epochs=20,
+    epochs=10,
     batch_size=128,
     model_name="Coursera",
     set_weights=True,
     weights_name="Coursera",
     inputs_name="Coursera_15min.csv",
-    fit_whole_dataset=False,
+    fit_whole_dataset=True,
 )
