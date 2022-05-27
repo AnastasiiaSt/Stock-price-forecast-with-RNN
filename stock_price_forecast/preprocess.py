@@ -1,5 +1,3 @@
-from sklearn import datasets
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import numpy as np
 from sklearn.utils import shuffle
 import pandas as pd
@@ -12,19 +10,19 @@ class Preprocess:
     valid_ratio is ratio of validation set
     """
 
-    def __init__(self, p, t, split, valid_ratio, scaling):
-        self.train_dataset = None
-        self.mean = None
-        self.std = None
-        self.x_max = None
-        self.x_min = None
+    def __init__(self, p: int, t: int, split: bool, valid_ratio: float, scaling: str):
+        self.train_dataset = 0
+        self.mean = 0
+        self.std = 0
+        self.x_max = 0
+        self.x_min = 0
         self.p = p
         self.t = t
         self.split = split
         self.valid_ratio = valid_ratio
         self.scaling = scaling
 
-    def fit(self, dataset):
+    def fit(self, dataset: pd.DataFrame):
         self.train_dataset = dataset
         if self.scaling == "min_max":
             self.x_max = np.max(dataset.values)
@@ -34,7 +32,7 @@ class Preprocess:
             self.std = dataset.std
         return self
 
-    def transform(self, dataset):
+    def transform(self, dataset: pd.DataFrame):
 
         # Data scaling
         if self.scaling == "min_max":
@@ -45,7 +43,9 @@ class Preprocess:
         elif self.scaling == "no":
             pass
         else:
-            raise ValueError("Defined scaling option is not available" % (self.scaling))
+            raise ValueError(
+                "Defined scaling option {} is not available".format(self.scaling)
+            )
 
         xs, indeces_x, ys, indeces_y = self.x_y_split(dataset_scaled)
 
@@ -89,7 +89,7 @@ class Preprocess:
 
             return xs, ys, indeces_x, indeces_y
 
-    def x_y_split(self, dataset):
+    def x_y_split(self, dataset: pd.DataFrame):
 
         indeces = dataset.index
         dataset = dataset.values.flatten()
@@ -101,18 +101,20 @@ class Preprocess:
         grouped = dataset[0:entry]
         grouped_indeces = indeces[0:entry]
         for i in range(1, m):
-            grouped = np.vstack([grouped, dataset[i : entry + i]])
-            grouped_indeces = np.vstack([grouped_indeces, indeces[i : entry + i]])
+            grouped = np.vstack([grouped, dataset[i:entry + i]])
+            grouped_indeces = np.vstack([grouped_indeces, indeces[i:entry + i]])
 
-        x = grouped[:, 0 : self.t]
+        x = grouped[:, 0:self.t]
         x = x.reshape((x.shape[0], x.shape[1], 1))
-        indeces_x = grouped_indeces[:, 0 : self.t]
-        y = grouped[:, (-self.p) :]
-        indeces_y = grouped_indeces[:, (-self.p) :]
+        indeces_x = grouped_indeces[:, 0:self.t]
+        y = grouped[:, -self.p:]
+        indeces_y = grouped_indeces[:, -self.p:]
 
         return x, indeces_x, y, indeces_y
 
-    def train_valid_split(self, x, indeces_x, y, indeces_y):
+    def train_valid_split(
+        self, x: np.ndarray, indeces_x: np.ndarray, y: np.ndarray, indeces_y: np.ndarray
+    ):
         valid_number = int(len(x) * self.valid_ratio)
         x, y = shuffle(x, y, random_state=42)
         x_valid, y_valid = x[-valid_number:, :, :], y[-valid_number:, :]

@@ -11,7 +11,7 @@ def get_inputs(file_name: str):
     return dataset
 
 
-def get_inputs_with_time(file_path: str, file_name: str):
+def get_inputs_with_time(file_path: str, file_name: str) -> pd.DataFrame:
     full_path = os.path.join(Path.cwd(), file_path, file_name)
     dataset = pd.read_csv(full_path)
     datetime_list = []
@@ -25,7 +25,9 @@ def get_inputs_with_time(file_path: str, file_name: str):
             year = str(20) + year
         datetime_list.append(month + "/" + day + "/" + year + " " + dataset["Time"][i])
     dataset["DateTime"] = datetime_list
-    dataset.set_index(pd.to_datetime(dataset["DateTime"], format="%m/%d/%Y %H:%M:%S"), inplace=True)
+    dataset.set_index(
+        pd.to_datetime(dataset["DateTime"], format="%m/%d/%Y %H:%M:%S"), inplace=True
+    )
     dataset.drop(columns=["Date", "Time", "DateTime", "Volume"], inplace=True)
 
     return dataset

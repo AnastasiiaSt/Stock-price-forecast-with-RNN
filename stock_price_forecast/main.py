@@ -1,6 +1,6 @@
 import tensorflow as tf
 import mlflow.tensorflow
-from data import get_inputs, get_inputs_with_time
+from data import get_inputs_with_time
 from preprocess import Preprocess
 from train import train_model, train_cont
 
@@ -20,7 +20,7 @@ def main(
     weights_name: str,
     inputs_name: str,
     fit_whole_dataset: bool,
-):
+) -> None:
     dataset = get_inputs_with_time("data", inputs_name)
 
     prep = Preprocess(p=p, t=t, valid_ratio=valid_ratio, scaling=scaling, split=True)
@@ -38,7 +38,7 @@ def main(
     ) = prep.transform(dataset)
 
     tf.random.set_seed(42)
-    with mlflow.start_run(run_name = "train_valid_fit"):
+    with mlflow.start_run(run_name="train_valid_fit"):
         mlflow.log_param("train_timesteps", t)
         mlflow.log_param("predict_timesteps", p)
         mlflow.log_param("valid_percent", valid_ratio)
@@ -53,7 +53,7 @@ def main(
             x_valid,
             y_valid,
             n_neurons=n_neurons,
-            optimization = optimization,
+            optimization=optimization,
             learning_rate=learning_rate,
             epochs=epochs,
             batch_size=batch_size,
@@ -77,7 +77,7 @@ def main(
         ) = prep_without_split.transform(dataset)
 
         tf.random.set_seed(42)
-        with mlflow.start_run(run_name = "entire_dataset_fit"):
+        with mlflow.start_run(run_name="entire_dataset_fit"):
             mlflow.log_param("train_timesteps", t)
             mlflow.log_param("predict_timesteps", p)
             mlflow.log_param("scaling", scaling)
@@ -88,7 +88,7 @@ def main(
                 x_train,
                 y_train,
                 n_neurons=n_neurons,
-                optimization = optimization,
+                optimization=optimization,
                 learning_rate=learning_rate,
                 epochs=epochs,
                 batch_size=batch_size,
@@ -105,7 +105,7 @@ main(
     valid_ratio=0.2,
     scaling="min_max",
     n_neurons=[32, 32],
-    optimization = "Adam",
+    optimization="Adam",
     learning_rate=0.0000001,
     epochs=10,
     batch_size=128,
