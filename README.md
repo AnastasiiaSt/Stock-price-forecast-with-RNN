@@ -8,16 +8,20 @@ Below presented monthly, weekly and daily graphs for the stock price just after 
 <img src="./images/week graph.png" width="900">
 <img src="./images/day graphs.png" width="900">
 
+### Training
+
 The dataset is divided into training and validation sets, which are used for model training. Long Short Term Memory (LSTM) model is implemented to make prediction of stock price for 32 consequent time steps, which are equivalent to 8 hours (32 timesteps times 15 minutes). In the final step, the model is trained on the entire dataset. 
 
 The training runs are stored in MLflow user interface, which is shown below.
 <img src="./images/mlflow ui.png" width="900">
 
-Comparison of the model predictions with the actual data on the training and validation sets are depicted in the following diagrams. Predictions for other periods of time can be found in *visualization* package *Prediction Graphs* notebook.
+### Prediction
+
+Comparison of the model predictions with the actual stock price for the training and validation sets are depicted in the following diagrams. Predictions for other periods of time can be found in *visualization* package *Prediction Graphs* notebook.
 <img src="./images/prediction train 1.png" width="900">
 <img src="./images/prediction train 2.png" width="900">
 
-Comparison of the model predictions with the actual data on unseen test data are depicted in the next diagrams.
+Comparison of the model predictions with the actual stock price for unseen test data are depicted in the next diagrams.
 <img src="./images/prediction test.png" width="900">
 
 
