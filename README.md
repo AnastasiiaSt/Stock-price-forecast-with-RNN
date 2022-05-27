@@ -23,9 +23,6 @@ Comparison of the model predictions with the actual stock price for the training
 <img src="./images/prediction train 1.png" width="900">
 <img src="./images/prediction train 2.png" width="900">
 
-Comparison of the model predictions with the actual stock price for unseen test data are depicted in the next diagrams.
-<img src="./images/prediction test.png" width="900">
-
 
 
 
