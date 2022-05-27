@@ -1,8 +1,8 @@
 ### Description
 
-The goal of this project is to create a deep learning model for Boeing stock price forecast. The stock data are obtained from [Yahoo Finance](https://finance.yahoo.com/quote/BA/history?period1=473385600&period2=1653091200&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true). Stock prices from 1 January 1985 to 20 May 2022 are used for training and validation. 
+The goal of this project is to create a deep learning model for Coursera stock price forecast. Dataset of stock prices with 15 minutes interval from 3 May 2021 to 1 January 2022 is used for training and validation. 
 
 <img src="./images/historical prices.png" width="900">
 
-Long Short Term Memory (LSTM) model is implemented to make prediction of Close, High, Low and Open stock price for 5 consequent days.
+Time step is equal to 15 minutes. Long Short Term Memory (LSTM) model is implemented to make prediction of stock price for 32 consequent time steps, which are equivalent to 8 hours (32 timesteps times 15 minutes).
 
